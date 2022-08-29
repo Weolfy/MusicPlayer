@@ -1,0 +1,100 @@
+{
+  "id": "2041980",
+  "name": "icons",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1727452",
+      "name": "218下载、导入",
+      "font_class": "xiazai",
+      "unicode": "e8c6",
+      "unicode_decimal": 59590
+    },
+    {
+      "icon_id": "2076215",
+      "name": "音量",
+      "font_class": "yinliang",
+      "unicode": "e87b",
+      "unicode_decimal": 59515
+    },
+    {
+      "icon_id": "7594169",
+      "name": "24gf-playlistMusic",
+      "font_class": "bofangliebiao",
+      "unicode": "ea86",
+      "unicode_decimal": 60038
+    },
+    {
+      "icon_id": "2076214",
+      "name": "暂停",
+      "font_class": "zanting",
+      "unicode": "e87a",
+      "unicode_decimal": 59514
+    },
+    {
+      "icon_id": "2076218",
+      "name": "播放2",
+      "font_class": "bofang",
+      "unicode": "e87c",
+      "unicode_decimal": 59516
+    },
+    {
+      "icon_id": "5876983",
+      "name": "单曲循环",
+      "font_class": "danquxunhuan",
+      "unicode": "e802",
+      "unicode_decimal": 59394
+    },
+    {
+      "icon_id": "5876984",
+      "name": "列表循环",
+      "font_class": "liebiaoxunhuan",
+      "unicode": "e803",
+      "unicode_decimal": 59395
+    },
+    {
+      "icon_id": "8341784",
+      "name": "上一首",
+      "font_class": "shangyishou",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "8341786",
+      "name": "下一首",
+      "font_class": "xiayishou",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "24267234",
+      "name": "播放-随机播放",
+      "font_class": "bofang-suijibofang",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "11372639",
+      "name": "爱心",
+      "font_class": "aixin1",
+      "unicode": "e8ab",
+      "unicode_decimal": 59563
+    },
+    {
+      "icon_id": "29918938",
+      "name": "爱心",
+      "font_class": "aixin1-copy",
+      "unicode": "ec52",
+      "unicode_decimal": 60498
+    },
+    {
+      "icon_id": "11372756",
+      "name": "爱心",
+      "font_class": "aixin",
+      "unicode": "e8c3",
+      "unicode_decimal": 59587
+    }
+  ]
+}
