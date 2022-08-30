@@ -1,1 +1,0 @@
-import{r as t}from"./request.985c1484.js";function n(){return t({method:"post",url:"/dj/banner"})}function d(){return t({method:"post",url:"/dj/catelist"})}function s(e){return t({method:"post",url:"/dj/recommend/type",params:{type:e}})}function u(e=30,o=0,r){return t({method:"post",url:"/dj/radio/hot",params:{limit:e,offset:o,cateId:r}})}export{n as a,d as b,u as c,s as g};

@@ -1,0 +1,1 @@
+import{r as t}from"./request.6f08c656.js";function l(){return t({method:"post",url:"/video/group/list"})}function i(r,o,e,s=30,a=0){return t({method:"post",url:"/mv/all",params:{area:r,type:o,order:e,limit:s,offset:a}})}export{i as a,l as g};
