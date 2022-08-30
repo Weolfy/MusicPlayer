@@ -1,0 +1,1 @@
+import{r as t}from"./request.6f08c656.js";function o(r){return t({method:"post",url:"/song/url",params:{id:r,realIP:"113.72.45.26"}})}function a(r){return t({method:"post",url:"/mv/url",params:{id:r,realIP:"113.72.45.26"}})}function u(r){return t({method:"post",url:"/video/url",params:{id:r,realIP:"113.72.45.26"}})}export{u as a,a as b,o as g};
