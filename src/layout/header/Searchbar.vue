@@ -64,6 +64,15 @@ let popoverState = ref(true);
 
 const search = () => {
     hideHot();
+    if (searchInput.value === '') {
+        searchSong(placeHolder.value).then((res:any) => {
+            router.push('/search/result/song/'+placeHolder.value)
+            store.commit('setSongResult', res.result.songs);
+            store.commit('setSongCount', res.result.songCount);
+            store.commit('changeStatus');        
+        });
+        return
+    }
     searchSong(searchInput.value).then((res:any) => {
         // console.log(res);
         router.push('/search/result/song/'+searchInput.value)

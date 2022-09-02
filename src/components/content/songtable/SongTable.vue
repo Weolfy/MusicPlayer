@@ -69,7 +69,7 @@
         <ul>
             <li class="menuItem" @click="goSongDetail(currentRow.id)">查看详情</li>
             <li class="menuItem" @click="play">播放</li>
-            <li class="menuItem">下一首播放</li>
+            <li class="menuItem" @click="playNext">下一首播放</li>
         </ul>
     </div>
     </div>
@@ -196,8 +196,8 @@ const popMenu = (row:any, column:any, event: MouseEvent) => {
     showMenu();
     event.preventDefault();
     let menu:HTMLElement = document.querySelector('.rClickMenu')!;
-    menu.style.top = (event.clientY - 192) + 'px';
-    menu.style.left = (event.clientX - 422) + 'px';
+    menu.style.top = ((row.no -1)*30 + event.offsetY + 53) + 'px';
+    menu.style.left = (event.offsetX + 74) + 'px';
     currentRow.value = row;
 }
 const showMenu = () => {
@@ -217,10 +217,43 @@ const play = () => {
     playRow(currentRow.value);
 };
 
+const playNext = () => {
+    if (currentRow.value.copyright == 0) {
+        ElMessage({
+            message: '该歌曲因版权或会员原因，暂时无法播放，敬请谅解',
+            offset: 250,
+            duration: 2000,
+            customClass: 'cpMessage'
+        });
+        let elm:NodeListOf<HTMLElement> = document.querySelectorAll('.cpMessage.el-message');
+        if(elm) {
+            for (let i=0;i<elm.length;i++) {
+                elm[i].style.cssText = ' --el-message-bg-color: #000; --el-message-border-color: #000; --el-message-text-color: #ec4141;'
+            };
+        }
+        return
+    }
+    getSongUrl(currentRow.value.id).then((res: any) => {
+        // console.log(res.data[0].url);
+        let url = res.data[0].url;
+        store.commit('pushCurrentPlaylist', {
+            id: currentRow.value.id,
+            title: currentRow.value.title,
+            artist: currentRow.value.artist,
+            from: '搜索',
+            duration: currentRow.value.duration,
+            url: url,
+        });
+    });
+}
+
 // 添加到播放列表相关事件
 const coverPlaylist = async() => {
     store.commit('clearPlaylist');
     for(let i=0;i<dataList?.value.length;i++) {
+        if (dataList?.value[i].privilege.cp == 0) {
+            continue
+        }
         let res = await getSongUrl(dataList?.value[i].id);
         let realUrl = res.data[0].url;
         store.commit('pushCurrentPlaylistOrder', {
@@ -246,6 +279,9 @@ const coverPlaylist = async() => {
 };
 const addToPlaylist = async() => {
     for(let i=0;i<dataList?.value.length;i++) {
+        if (dataList?.value[i].privilege.cp == 0) {
+            continue
+        }
         let res = await getSongUrl(dataList?.value[i].id);
         let realUrl = res.data[0].url;
         store.commit('pushCurrentPlaylistOrder', {

@@ -66,7 +66,7 @@
             <ul>
                 <li class="menuItem" @click="goSongDetail(currentRow.id)">查看详情</li>
                 <li class="menuItem" @click="play">播放</li>
-                <li class="menuItem">下一首播放</li>
+                <li class="menuItem" @click="playNext">下一首播放</li>
             </ul>
         </div>
     </div>
@@ -113,6 +113,22 @@ interface songItem {
 let resultList:any= reactive([]);
 const dataList:Array<songItem> = reactive([]);
 watch(() => store.state.searchStatus, () => {
+    if (store.getters['getSongCount'] == 0) {
+        dataList.length = 0;
+        ElMessage({
+            message: '抱歉，未能找到 "'+route.params.keywords+'" 相关搜索结果',
+            offset: 250,
+            duration: 3000,
+            customClass: 'cpMessage'
+        });
+        let elm:NodeListOf<HTMLElement> = document.querySelectorAll('.cpMessage.el-message');
+        if(elm) {
+            for (let i=0;i<elm.length;i++) {
+                elm[i].style.cssText = ' --el-message-bg-color: #000; --el-message-border-color: #000; --el-message-text-color: #ec4141;'
+            };
+        }
+        return
+    }
     resultList = store.getters['getSongResult'];
     dataList.length = 0;
     for (let i = 0;i < resultList.length; i++) {
@@ -248,10 +264,13 @@ let isShow = ref(false);
 let currentRow = ref();
 const popMenu = (row:any, column:any, event: MouseEvent) => {
     showMenu();
+    // console.log(row);
+    // console.log(event.offsetX,event.offsetY);
+    
     event.preventDefault();
     let menu:HTMLElement = document.querySelector('.rClickMenu')!;
-    menu.style.top = (event.clientY - 192) + 'px';
-    menu.style.left = (event.clientX - 422) + 'px';
+    menu.style.top = ((row.num -1)*31 + event.offsetY + 23) + 'px';
+    menu.style.left = (event.offsetX + 74) + 'px';
     currentRow.value = row;
 }
 const showMenu = () => {
@@ -268,9 +287,39 @@ const clickOutside = (row:any, column:any, event: any) => {
 };
 
 const play = () => {
+    hideMenu();
     playRow(currentRow.value);
 }
-
+const playNext = () => {
+    hideMenu();
+    if (currentRow.value.copyright == 0) {
+        ElMessage({
+            message: '该歌曲因版权或会员原因，暂时无法播放，敬请谅解',
+            offset: 250,
+            duration: 2000,
+            customClass: 'cpMessage'
+        });
+        let elm:NodeListOf<HTMLElement> = document.querySelectorAll('.cpMessage.el-message');
+        if(elm) {
+            for (let i=0;i<elm.length;i++) {
+                elm[i].style.cssText = ' --el-message-bg-color: #000; --el-message-border-color: #000; --el-message-text-color: #ec4141;'
+            };
+        }
+        return
+    }
+    getSongUrl(currentRow.value.id).then((res: any) => {
+        // console.log(res.data[0].url);
+        let url = res.data[0].url;
+        store.commit('pushCurrentPlaylist', {
+            id: currentRow.value.id,
+            title: currentRow.value.title,
+            artist: currentRow.value.artist,
+            from: '搜索',
+            duration: currentRow.value.duration,
+            url: url,
+        });
+    });
+}
 </script>
 
 <style scoped lang='scss'>
