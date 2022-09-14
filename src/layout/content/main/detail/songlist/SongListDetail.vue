@@ -80,7 +80,7 @@ onMounted(() => {
         getHotComment(route.params.id as string, 2)
     ]).then(axios.spread((dres, sres, cres) => {
         // console.log(dres);
-        console.log(sres);
+        // console.log(sres);
         slname.value = dres.playlist.name;
         coverUrl.value = dres.playlist.coverImgUrl;
         createTime.value = dres.playlist.createTime;

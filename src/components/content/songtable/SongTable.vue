@@ -30,10 +30,10 @@
         <el-table-column label="音乐标题" width="230" class="title">
             <template #default="scope">
                 <div :title="scope.row.name">
-                    <div v-if="scope.row.privilege.cp === 0" class="noCopyright">{{scope.row.name}}</div>
+                    <div v-if="getCopy(scope.row)" class="noCopyright">{{scope.row.name}}</div>
                     <div v-else>{{scope.row.name}}</div> 
-                    <span class="trialTags" v-if="scope.row.fee == 1&&scope.row.privilege.cp != 0">试听</span>
-                    <span class="trialTags" v-else-if="scope.row.fee == 1&&scope.row.privilege.cp == 0">VIP</span>
+                    <span class="trialTags" v-if="isTrial(scope.row)">试听</span>
+                    <span class="trialTags" v-else-if="isVIP(scope.row)">VIP</span>
                 </div>
             </template>
         </el-table-column>
@@ -101,9 +101,32 @@ const formatDuration = (duration: string):string => {
     return min + ':' + second;
 }
 
+// 判断版权
+const getCopy = (row:any):boolean => {
+    if (row.privilege) {
+        return row.privilege.cp === 0;
+    }else {
+        return false
+    }
+};
+const isTrial = (row:any):boolean => {
+    if (row.privilege) {
+        return row.fee == 1&&row.privilege.cp != 0
+    }else {
+        return row.fee == 1&&row.copyright != 0
+    }
+};
+const isVIP = (row:any):boolean => {
+    if (row.privilege) {
+        return row.fee == 1&&row.privilege.cp == 0
+    }else {
+        return row.fee ==1&&row.copyright == 0
+    }
+};
+
 // 点击播放事件
 const playRow = (row: any) => {
-    if (row.privilege.cp == 0) {
+    if (getCopy(row) || isVIP(row)) {
         ElMessage({
             message: '该歌曲因版权或会员原因，暂时无法播放，敬请谅解',
             offset: 250,
@@ -117,7 +140,7 @@ const playRow = (row: any) => {
             };
         }
         
-        return
+        return 
     }
     // console.log(row.id);
     getSongUrl(row.id).then((res: any) => {
@@ -218,7 +241,7 @@ const play = () => {
 };
 
 const playNext = () => {
-    if (currentRow.value.copyright == 0) {
+    if (getCopy(currentRow.value) || isVIP(currentRow.value)) {
         ElMessage({
             message: '该歌曲因版权或会员原因，暂时无法播放，敬请谅解',
             offset: 250,
@@ -251,8 +274,14 @@ const playNext = () => {
 const coverPlaylist = async() => {
     store.commit('clearPlaylist');
     for(let i=0;i<dataList?.value.length;i++) {
-        if (dataList?.value[i].privilege.cp == 0) {
-            continue
+        if (dataList?.value[i].privilege) {
+            if (dataList?.value[i].privilege.cp == 0) {
+                continue
+            }
+        }else {
+            if (dataList?.value[i].fee ==1&&dataList?.value[i].copyright == 0) {
+                continue
+            }
         }
         let res = await getSongUrl(dataList?.value[i].id);
         let realUrl = res.data[0].url;
@@ -279,8 +308,14 @@ const coverPlaylist = async() => {
 };
 const addToPlaylist = async() => {
     for(let i=0;i<dataList?.value.length;i++) {
-        if (dataList?.value[i].privilege.cp == 0) {
-            continue
+        if (dataList?.value[i].privilege) {
+            if (dataList?.value[i].privilege.cp == 0) {
+                continue
+            }
+        }else {
+            if (dataList?.value[i].fee ==1&&dataList?.value[i].copyright == 0) {
+                continue
+            }
         }
         let res = await getSongUrl(dataList?.value[i].id);
         let realUrl = res.data[0].url;
