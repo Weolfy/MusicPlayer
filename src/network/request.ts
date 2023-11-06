@@ -4,7 +4,7 @@ import axios from 'axios'
 export function request(config: Object) {
     // 在内部创建一个实例,带上baseUrl
     const instance = axios.create({
-        baseURL: 'https://www.autumnfish.cn',
+        baseURL: 'https://service-o4cdmcrw-1322204737.gz.apigw.tencentcs.com/release/',
         // baseURL: 'https://cloudmusicapi-one.vercel.app/',
         timeout: 20000
     });
